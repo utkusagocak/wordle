@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro,
+    serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: start center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+:root {
+  --transparent: rgb(0 0 0 / 0);
+  --border-focus: #09090b;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --gray: #a1a1aa;
+  --red: #f87171;
+}
+
+.dark {
+  --border-focus: #f8fafc;
+  --green: #16a34a;
+  --yellow: #ca8a04;
+  --gray: #52525b;
+  --red: #dc2626;
+}
+
+@layer base {
+  :root {
+    --background: 226 0% 95%;
+    --foreground: 226 0% 0%;
+    --card: 226 0% 90%;
+    --card-foreground: 226 0% 10%;
+    --popover: 226 0% 95%;
+    --popover-foreground: 226 95% 0%;
+    --primary: 226 19% 22%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 226 10% 70%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 188 10% 85%;
+    --muted-foreground: 226 0% 35%;
+    --accent: 188 10% 80%;
+    --accent-foreground: 226 0% 10%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 226 0% 90%;
+    --border: 226 20% 50%;
+    --input: 226 20% 18%;
+    --ring: 226 19% 22%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 226 10% 5%;
+    --foreground: 226 0% 90%;
+    --card: 226 0% 0%;
+    --card-foreground: 226 0% 90%;
+    --popover: 226 10% 5%;
+    --popover-foreground: 226 0% 90%;
+    --primary: 226 19% 22%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 226 10% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 188 10% 15%;
+    --muted-foreground: 226 0% 60%;
+    --accent: 188 10% 15%;
+    --accent-foreground: 226 0% 90%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 226 0% 90%;
+    --border: 226 20% 18%;
+    --input: 226 20% 18%;
+    --ring: 226 19% 22%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
