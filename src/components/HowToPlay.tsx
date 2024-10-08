@@ -1,22 +1,103 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { ResponsiveDialog } from './ui/responsive-dialog';
-import { motion } from 'framer-motion';
-import { Tile } from './GameGrid';
-import { getLetterStatus } from '@/store';
+import { stagger, useAnimate } from 'framer-motion';
+import { getLetterStatus, TileStatus } from '@/store';
 
 const example = {
   target: 'avoid',
   guesses: ['audio', 'droid', 'avoid'],
 };
 
-export function HowToPlay({ children }: PropsWithChildren) {
+const bgMap = {
+  [TileStatus.Empty]: 'var(--transparent)',
+  [TileStatus.Gray]: 'var(--gray)',
+  [TileStatus.Yellow]: 'var(--yellow)',
+  [TileStatus.Green]: 'var(--green)',
+};
+
+function ExampleGame() {
+  const [scope, animate] = useAnimate<HTMLDivElement>();
+  const timeout = useRef(0);
+
+  async function sequence() {
+    if (!scope.current) return;
+
+    const rows = scope.current.querySelectorAll('.example-row');
+    for (const row of rows) {
+      const chars = row.querySelectorAll('.example-char');
+      const tiles = row.querySelectorAll('.example-tile');
+
+      if (!scope.current) return;
+      await animate(chars, { opacity: 1 }, { delay: stagger(0.1, { startDelay: 1 }) });
+
+      if (!scope.current) return;
+      await animate(
+        tiles,
+        { rotateX: 360, background: 'var(--status-color)' },
+        { delay: stagger(0.1, { startDelay: 0.25 }) },
+      );
+    }
+
+    if (!scope.current) return;
+    await animate(
+      '.example-row:last-child',
+      { transform: ['scale(1)', 'scale(1.1)', 'scale(1.1)', 'scale(1)'] },
+      { delay: 0.5, ease: 'anticipate', duration: 1.5 },
+    );
+
+    if (!scope.current) return;
+    await animate('.example-char', { opacity: 0 }, { delay: 3 });
+
+    if (!scope.current) return;
+    await animate('.example-tile', { rotateX: 0, background: 'var(--transparent)' });
+  }
+
+  useEffect(() => {
+    if (scope.current) {
+      async function loop() {
+        window.clearTimeout(timeout.current);
+        await sequence();
+        timeout.current = window.setTimeout(loop);
+      }
+
+      loop();
+      return () => window.clearTimeout(timeout.current);
+    }
+  }, [scope, animate]);
+
   return (
-    <ResponsiveDialog>
+    <div ref={scope} className="text-xl space-y-1 mt-4 uppercase example-board">
+      {example.guesses.map((guess, index) => (
+        <div key={index} className="example-row flex items-center gap-1 w-min">
+          {getLetterStatus(example.target, [...guess]).map((status, i: number) => (
+            <div
+              key={i}
+              className="example-tile flex items-center justify-center border border-foreground h-[1.8em] w-[1.8em]"
+              style={
+                {
+                  '--status-color': bgMap[status],
+                } as React.CSSProperties
+              }
+            >
+              <div className="example-char opacity-0">{guess[i]}</div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function HowToPlay({ children }: PropsWithChildren) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <ResponsiveDialog open={open} onOpenChange={setOpen}>
       <ResponsiveDialog.Trigger asChild>{children}</ResponsiveDialog.Trigger>
       <ResponsiveDialog.Content>
         <ResponsiveDialog.Header>
           <ResponsiveDialog.Title>How to Play</ResponsiveDialog.Title>
-          <ResponsiveDialog.Description>Wordle, Quordle, and Octordle?</ResponsiveDialog.Description>
+          <ResponsiveDialog.Description>Wordle, Quordle or Octordle?</ResponsiveDialog.Description>
         </ResponsiveDialog.Header>
         <section className="pr-4 pl-6">
           <h1 className="sr-only">How to play?</h1>
@@ -47,31 +128,7 @@ export function HowToPlay({ children }: PropsWithChildren) {
 
           <section className="mt-6">
             <h3 className="text-lg">Example</h3>
-            <motion.div
-              className="text-xl space-y-1 mt-4"
-              animate={'entered'}
-              transition={{
-                staggerChildren: 2,
-              }}
-            >
-              {example.guesses.map((guess, index) => (
-                <motion.div
-                  key={index}
-                  className="grid grid-rows-[1.8em] auto-cols-[1.8em] grid-flow-col gap-1"
-                  variants={{
-                    entered: {
-                      transition: {
-                        staggerChildren: 0.1,
-                      },
-                    },
-                  }}
-                >
-                  {getLetterStatus(example.target, [...guess]).map((status, i) => (
-                    <Tile key={i} char={guess[i]} status={status} className="border" />
-                  ))}
-                </motion.div>
-              ))}
-            </motion.div>
+            <ExampleGame />
           </section>
         </section>
 

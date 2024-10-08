@@ -80,6 +80,17 @@ function App() {
   const alphabetStatus = useMemo(() => getAlphabetStatus(game), [game]);
 
   useEffect(() => {
+    setGame({ ...(JSON.parse(localStorage.getItem('game') ?? '{}') ?? {}) });
+    const unsubscribe = useWordleStore.subscribe((state, prevState) => {
+      if (state.game !== prevState.game) {
+        localStorage.setItem('game', JSON.stringify(state.game));
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     function keydown(e: KeyboardEvent) {
       if (e.repeat) return;
       if (emitKey(e.key)) {
@@ -88,18 +99,8 @@ function App() {
       }
     }
 
-    setGame({ ...(JSON.parse(localStorage.getItem('game') ?? '{}') ?? {}) });
-    const unsubscribe = useWordleStore.subscribe((state, prevState) => {
-      if (state.game !== prevState.game) {
-        localStorage.setItem('game', JSON.stringify(state.game));
-      }
-    });
-
     document.addEventListener('keydown', keydown);
-    return () => {
-      document.removeEventListener('keydown', keydown);
-      unsubscribe();
-    };
+    return () => document.removeEventListener('keydown', keydown);
   }, []);
 
   return (
