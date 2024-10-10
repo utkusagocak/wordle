@@ -105,11 +105,11 @@ function App() {
 
   return (
     <ThemeProvider>
-      <main className="flex flex-col items-center h-screen overflow-hidden">
+      <main className="flex flex-col items-center overflow-hidden h-full w-full">
         <header className="w-full border-b p-2 items-center gap-2 grid grid-cols-[1fr,1fr,1fr]">
           <div></div>
           <div className="flex justify-center">
-            <h1 className="text-3xl">Wordle</h1>
+            <h1 className="text-2xl sm:text-3xl">Wordle</h1>
           </div>
           <div className="flex justify-end gap-2">
             <HowToPlay>
@@ -133,7 +133,7 @@ function App() {
                   target={target}
                   guessCount={game.guessCount}
                   className={cn({
-                    'text-3xl sm:text-5xl': game.targets.length === 1,
+                    'text-4xl sm:text-5xl': game.targets.length === 1,
                     'text-xl sm:text-4xl': game.targets.length > 1 && game.targets.length < 5,
                     'text-lg sm:text-2xl': game.targets.length > 4,
                   })}
@@ -148,16 +148,20 @@ function App() {
           ))}
         </div>
 
-        <div className="w-full max-w-[500px] pb-4 px-2">
-          <div className="ml-auto flex gap-2 justify-between flex items-center">
-            <RestartDialog>
-              <Button variant={'secondary'}>Restart</Button>
-            </RestartDialog>
+        <div className="relative w-full flex gap-2 justify-between flex items-center">
+          <RestartDialog>
+            <Button size={'sm'} variant={'secondary'} className="absolute bottom-0 left-2">
+              Restart
+            </Button>
+          </RestartDialog>
 
-            <NewGameDialog>
-              <Button variant={'secondary'}>New Game</Button>
-            </NewGameDialog>
-          </div>
+          <NewGameDialog>
+            <Button size={'sm'} variant={'secondary'} className="absolute bottom-0 right-2">
+              New Game
+            </Button>
+          </NewGameDialog>
+        </div>
+        <div className="w-full max-w-[500px] pb-4 px-2">
           <Keyboard className="pt-2" status={alphabetStatus} onKeyboard={emitKey} />
         </div>
       </main>

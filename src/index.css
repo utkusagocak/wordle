@@ -20,15 +20,20 @@ body {
   margin: 0;
   display: flex;
   place-items: start center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 #root {
   margin: 0 auto;
   padding: 0;
   text-align: center;
-  width: 100%;
+
+  min-height: 300px;
+
+  width: 100vw;
+  height: 100vh;
+
+  width: 100svw;
+  height: 100svh;
 }
 
 :root {

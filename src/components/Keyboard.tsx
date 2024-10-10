@@ -44,7 +44,7 @@ export const Keyboard = memo(function Keyboard({
               key={c + i}
               data-key={c}
               className={cn(
-                'capitalize px-0 active:scale-[1.1] transition-transform duration-200 flex-1 text-lg sm:text-2xl',
+                'capitalize px-0 active:scale-[1.1] transition-transform duration-200 flex-1 text-lg sm:text-2xl h-14',
               )}
               style={{
                 background: getBackground(status[c]),

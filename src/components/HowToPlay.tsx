@@ -89,7 +89,16 @@ function ExampleGame() {
 }
 
 export function HowToPlay({ children }: PropsWithChildren) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('how-to-play') !== 'true') {
+      setTimeout(() => {
+        localStorage.setItem('how-to-play', 'true');
+        setOpen(true);
+      }, 1500);
+    }
+  }, []);
 
   return (
     <ResponsiveDialog open={open} onOpenChange={setOpen}>
