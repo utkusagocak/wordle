@@ -148,20 +148,20 @@ function App() {
           ))}
         </div>
 
-        <div className="relative w-full flex gap-2 justify-between flex items-center">
-          <RestartDialog>
-            <Button size={'sm'} variant={'secondary'} className="absolute bottom-0 left-2">
-              Restart
-            </Button>
-          </RestartDialog>
-
-          <NewGameDialog>
-            <Button size={'sm'} variant={'secondary'} className="absolute bottom-0 right-2">
-              New Game
-            </Button>
-          </NewGameDialog>
-        </div>
         <div className="w-full max-w-[500px] pb-4 px-2">
+          <div className="relative w-full flex gap-2 justify-between flex items-center">
+            <RestartDialog>
+              <Button size={'sm'} variant={'secondary'} className="absolute bottom-0 left-2">
+                Restart
+              </Button>
+            </RestartDialog>
+
+            <NewGameDialog>
+              <Button size={'sm'} variant={'secondary'} className="absolute bottom-0 right-2">
+                New Game
+              </Button>
+            </NewGameDialog>
+          </div>
           <Keyboard className="pt-2" status={alphabetStatus} onKeyboard={emitKey} />
         </div>
       </main>
